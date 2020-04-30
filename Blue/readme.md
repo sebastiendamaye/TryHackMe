@@ -2,7 +2,7 @@
 # Blue - Deploy & hack into a Windows machine, leveraging common misconfigurations issues.
 
 ## [Task 1] Recon 19/03/2019
----------------------------------------------------
+
 
 ### Description
 
@@ -95,7 +95,7 @@ Nmap done: 1 IP address (1 host up) scanned in 0.94 seconds
 ~~~
 
 ## [Task 2] Gain Access 19/03/2019
----------------------------------------------------
+
 
 ### Description
 
@@ -232,7 +232,7 @@ Confirm that the exploit has run correctly. You may have to press enter for the 
 
 
 ## [Task 3] Escalate 19/03/2019
----------------------------------------------------
+
 
 ### Description
 
@@ -273,9 +273,9 @@ Migrate to this process using the 'migrate PROCESS_ID' command where the process
 
 
 ## [Task 4] Cracking 19/03/2019
----------------------------------------------------
+
 
 
 ## [Task 5] Find flags! 
----------------------------------------------------
+
 
