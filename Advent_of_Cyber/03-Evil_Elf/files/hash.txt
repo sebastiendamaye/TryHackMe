@@ -1,0 +1,1 @@
+buddy:$6$3GvJsNPG$ZrSFprHS13divBhlaKg1rYrYLJ7m1xsYRKxlLh0A1sUc/6SUd7UvekBOtSnSyBwk3vCDqBhrgxQpkdsNN6aYP1:1000:1000:buddy,,,:/home/buddy:/bin/bash

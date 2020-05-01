@@ -1,0 +1,1 @@
+buddy:x:1000:1000:buddy,,,:/home/buddy:/bin/bash
