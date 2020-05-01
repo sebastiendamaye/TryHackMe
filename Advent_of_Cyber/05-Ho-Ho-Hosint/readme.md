@@ -79,8 +79,8 @@ On her blog, there is a picture of `ada lovelace`:
 
 To know who this person is, use [Google image search engine](https://images.google.com/?gws_rd=ssl) and paste the URL of the image:
 
-!["google images"](files/google-images.jpg)
+!["google images"](files/google-images.png)
 
 It will find related resources:
 
-!["google images 2"](files/google-images-2.jpg)
+!["google images 2"](files/google-images-2.png)
