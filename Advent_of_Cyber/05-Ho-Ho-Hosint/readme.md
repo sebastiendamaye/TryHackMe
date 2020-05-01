@@ -65,7 +65,7 @@ Answer: iPhone
 
 With the help of the available resource in the instructions, we are using [WayBackMachine](https://archive.org/web/) to search for snapshots of the blog (https://lolajohnson1998.wordpress.com/). We find a first snapshot on Oct 23rd, 2019, which reveals the following statement: `I started as a freelance photographer five years ago today!`:
 
-!["way back machine"](file/waybackmachine.png)
+!["way back machine"](files/waybackmachine.png)
 
 ~~~
 Answer: 23/10/2014 
@@ -75,12 +75,12 @@ Answer: 23/10/2014
 
 On her blog, there is a picture of `ada lovelace`:
 
-!["ada lovelace"](file/reverse_image_search.jpg)
+!["ada lovelace"](files/reverse_image_search.jpg)
 
 To know who this person is, use [Google image search engine](https://images.google.com/?gws_rd=ssl) and paste the URL of the image:
 
-!["google images"](file/google-images.jpg)
+!["google images"](files/google-images.jpg)
 
 It will find related resources:
 
-!["google images 2"](file/google-images-2.jpg)
+!["google images 2"](files/google-images-2.jpg)
