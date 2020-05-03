@@ -122,7 +122,7 @@ However, there is nothing I could do to answer the question, and decided to focu
 
 I connected to the server over RDP using the same credentials and was able to open the `user.txt` file on the desktop:
 
-!["rdp-user-txt"](files/rdp-user-txt)
+!["rdp-user-txt"](files/rdp-user-txt.png)
 
 `Answer: 3b99fbdc6d430bf51c72c651a261927`
 
@@ -145,11 +145,7 @@ In order to work, you should first initialize both Internet Explorer and Google 
 
 Restore the `hhupd.exe` file on the desktop. Right click on it and select `Run as administrator`. From the popup window, click on `Show more details` and then on `Show information about the publisher's certificate`.
 
-You will be provided with a popup window showing the certificate information:
-
-!["certificate info"](files/certificate-info.png)
-
-Now, click on the `Verisign Commercial Software Publishers CA` link. You will be prompted to open with Google Chrome or Internet Explorer. Select Internet Explorer.
+You will be provided with a popup window showing the certificate information. Click on the `Verisign Commercial Software Publishers CA` link. You will be prompted to open with Google Chrome or Internet Explorer. Select Internet Explorer.
 
 !["open with"](files/open-with.png)
 
