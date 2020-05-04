@@ -179,11 +179,11 @@ Now, in the `Positions` tab, make sure you select `Sniper` from the `Attack type
 
 Now, go to the `Payloads` tab, and in the `Payload Options` section, add some extensions to the list (`php`, `php4`, `php5`, `phtml`, ...). When done, click on the `Start Attack` button.
 
-!["burp intruder payloads"](burp-intruder-payloads.png)
+!["burp intruder payloads"](files/burp-intruder-payloads.png)
 
 Once the attack is complete, you are presented with the following results:
 
-!["burp intruder results"](burp-intruder-results.png)
+!["burp intruder results"](files/burp-intruder-results.png)
 
 Notice that you can assess the allowed extensions based on the size of the response. Now, we know that only the `*.php` extension was forbidden. Let's rename our reverse shell script:
 
