@@ -460,14 +460,14 @@ We can use the command `cat /etc/crontab` to view what cron jobs are scheduled. 
 
 Cronjobs exist in a certain format, being able to read that format is important if you want to exploit a cron job. 
 
-* # = ID
-* m = Minute
-* h = Hour
-* dom = Day of the month
-* mon = Month
-* dow = Day of the week
-* user = What user the command will run as
-* command = What command should be run
+* `#` = ID
+* `m` = Minute
+* `h` = Hour
+* `dom` = Day of the month
+* `mon` = Month
+* `dow` = Day of the week
+* `user` = What user the command will run as
+* `command` = What command should be run
 
 For Example,
 
