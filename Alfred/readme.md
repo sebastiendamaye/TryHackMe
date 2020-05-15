@@ -54,7 +54,11 @@ Nmap has discovered 3 ports.
 
 ## #1.2 - What is the username and password for the log in panel(in the format username:password)
 
-Accessing the URL on port 8080 with `admin`:`admin` works!
+Accessing the URL on port 8080 shows a Jenkins authentication form.
+
+Default credentials for Jenkins are `admin`:`password` but we know here (look at the format of the expected answer) that both the login and the passwords are 5 characters.
+
+Login with `admin`:`admin`.
 
 ## #1.3
 
