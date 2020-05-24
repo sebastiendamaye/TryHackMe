@@ -365,7 +365,7 @@ $ curl -s http://10.10.99.53/feardead/ftp/
 
 It comes with the following picture (`what.png`) that we will use for the next question.
 
-!["files/what.png"]
+!["what.png"](files/what.png)
 
 Back to this strange code, we follow the hint and translate the Chinese characters to Engligh using Google translate:
 
@@ -381,7 +381,7 @@ Flag 46: `50793785871220489068`
 
 Unstretch the image and flip it horizontally (you can easily do it with Gimp).
 
-!["files/what-2.png"]
+!["what-2.png"](files/what-2.png)
 
 Answer: `secure:stego`
 
