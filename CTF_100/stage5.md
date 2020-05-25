@@ -248,6 +248,8 @@ Ciphers beginning with C:
 * Chaocipher
 * Copiale cipher
 
+Using brute force, we find that the user `vnvnuxammt` decodes to `memelorddk` with an offset of +9. We will use this username for the next flag.
+
 Flag 70: `rqi51dlh6b67q0v7qhmc`
 
 # #11 - Flag 71
@@ -258,7 +260,7 @@ Notice that the `robots.txt` file disclosed 3 directories, and each name is a re
 * **PI**: Pinterest (`thmdkdk_`)
 * **TB**: ???
 
-TB refers to Tumblr. We can find the following page with the same avatar: https://memelorddk.tumblr.com/
+TB refers to Tumblr. Linked with the username found previously (`memelorddk`), we can find the following page with the same avatar: https://memelorddk.tumblr.com/
 
 There are 2 posts, 1 of which being the flag.
 
