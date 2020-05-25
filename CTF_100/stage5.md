@@ -212,9 +212,10 @@ SK: thisisroadstossh
 Type: hex16
 ~~~
 
-Take note of the number disclosed on the 2nd post (`44414`). This will be used for the final question.
-
-As far as the last post, it refers to OpenSSL, we'll keep this for the final question.
+* The 1st post is an encrypted string that we will use for the next question
+* Take note of the number disclosed on the 2nd post (`44414`). This will be used for the final question.
+* The 3rd post is our flag
+* The last post refers to AES, we'll keep this for the final question.
 
 One of the post reveals flag 68: `o0no5s3qmo7wymnagnwv`
 
