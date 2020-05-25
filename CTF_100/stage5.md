@@ -40,31 +40,57 @@ Flag61: `73a0u8asqeeki7ashcv2`
 There is a `robots.txt` file that reveals hidden locations and a flag, but we will keep that for later flags. For now, let's perform a scan.
 
 ~~~
-$ gobuster dir -w /data/src/wordlists/big.txt -u http://roadtoroot.com
+$ gobuster dir -w /data/src/wordlists/directory-list-2.3-medium.txt -u http://roadtoroot.com/
 ===============================================================
 Gobuster v3.0.1
 by OJ Reeves (@TheColonial) & Christian Mehlmauer (@_FireFart_)
 ===============================================================
-[+] Url:            http://roadtoroot.com
+[+] Url:            http://roadtoroot.com/
 [+] Threads:        10
-[+] Wordlist:       /data/src/wordlists/big.txt
+[+] Wordlist:       /data/src/wordlists/directory-list-2.3-medium.txt
 [+] Status codes:   200,204,301,302,307,401,403
 [+] User Agent:     gobuster/3.0.1
 [+] Timeout:        10s
 ===============================================================
-2020/05/25 08:22:35 Starting gobuster
+2020/05/25 11:52:32 Starting gobuster
 ===============================================================
 /.htaccess (Status: 403)
 /.htpasswd (Status: 403)
+/.hta (Status: 403)
 /execute (Status: 301)
-/robots.txt (Status: 200)
+/PI (Status: 301)
+/TW (Status: 301)
+/grasshopper (Status: 301)
 /server-status (Status: 403)
+/TB (Status: 301)
 ===============================================================
-2020/05/25 08:24:25 Finished
+2020/05/25 12:13:06 Finished
 ===============================================================
 ~~~
 
-The `/execute/` directory is interesting:
+There is an interesting `/grasshoper/` directory that reveals SSH credentials:
+
+~~~
+$ curl -s http://roadtoroot.com/grasshopper/
+<p>Are you ready to root the machine?</p>
+<p> SSH username:</p><br>
+<img src="user.png"/><br><br>
+<p> SSH password</p><br>
+<img src="pass.png"/><br><br>
+<p>Where is the SSH port?</p>
+$ wget http://roadtoroot.com/grasshopper/user.png
+$ wget http://roadtoroot.com/grasshopper/pass.png
+~~~
+
+These symbols are Pig Pen that we can decode with https://www.dcode.fr/chiffre-pig-pen-francs-macons:
+
+encoded | decoded
+---|---
+!["user.png"](files/user.png) | !["user_pigpen.png"](files/user_pigpen.png)
+
+!["pass.png"](files/pass.png) | !["pass_pigpen.png"](files/pass_pigpen.png)
+
+The `/execute/` directory reveals our flag:
 
 ~~~
 $ curl -s http://roadtoroot.com/execute/
@@ -296,3 +322,8 @@ Type: hex16
 The last port is `39914`
 
 The full sequence is: `28817 44414 39914`.
+
+**NOTES**
+* Note 1: the order will be `39914 28817 44414 for` for the next stage, as suggested by the hint*
+* Note 2: no idea at this stage what the SSH credentials are for (the ones found with the gobuster scan)
+* Note 3: don't forget to remove the entry `roadtoroot.com` from your `/etc/hosts` file
