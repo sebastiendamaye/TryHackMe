@@ -599,20 +599,16 @@ port?: 7885
 
 We are provided with a port (`7885`), probably part of the port knocking sequence. Let's keep it for later.
 
-I was not able to crack this flag :( Any help would be appreciated!
+This is a PLAYFAIR cipher.
+
+!["playfair_cipher.png"](files/playfair_cipher.png)
 
 ~~~
-????????????????????
-Vigenere: 			YHTLRHBYINAHBROQSNWHQO
-Playfair cipher: 	CLGQWIWHRSSXSZEVRIMCZX
-Slidefair cipher: 	SKPKAZIUQQGEKFGTGABFOB
-Beaufort classic: 	CTHPJTZCSNATZJMKINETKM
-Beaufort german:	KPTBHTXIIJWRNZOGIZSRQK
-Rozier: 			TPYTOVSIXYELWZTYPBNRFZ
-Vernam cipher:		YHTLRHBYINAHBROQSNWHQO
-Autoclave:			YHTLRHBYINAHJBVAJZTOIM
-????????????????????
+$ echo "CLGQWIWHRSSXSZEVRIMCZX" | sed "s/X//g"
+CLGQWIWHRSSSZEVRIMCZ
 ~~~
+
+Flag 90: `CLGQWIWHRSSSZEVRIMCZ`
 
 # #11 - Flag 91
 
