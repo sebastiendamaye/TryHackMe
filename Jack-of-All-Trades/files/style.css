@@ -1,0 +1,21 @@
+main, h1 {
+	text-align: center;
+}
+
+main{
+	width: 75%;
+	margin: auto auto auto auto;
+}
+
+h1{
+	font-size: 6em;
+}
+
+p{
+	font-size: 1.3em;
+}
+
+#signature{
+	text-align: right;
+}
+
