@@ -248,7 +248,7 @@ jack@jack-of-all-trades:~$
 
 There is no flag but a picture (`user.jpg`) in which we can see the flag:
 
-!["user.jpg"](files/user.jpg)
+!["user-flag.png"](files/user-flag.png)
 
 User flag: `securi-tay2020_{p3ngu1n-hunt3r-3xtr40rd1n41r3}`
 
