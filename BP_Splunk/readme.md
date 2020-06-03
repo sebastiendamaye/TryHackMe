@@ -31,7 +31,7 @@ Answer: `index`
 
 ## #5 - We can create 'views' that allow us to consistently pull up the same search over and over again; what are these called?
 
-Answer: `...`
+Answer: `dashboard`
 
 ## #6 - Importing data doesn't always go as planned and we can sometimes end up with multiple copies of the same data, what command do we include in our search to remove these copies?
 
@@ -95,11 +95,11 @@ Answer: `reverse`
 
 ## #21 - When viewing search results, it's often useful to rename fields using user-provided tables of values. What command do we include within a search to do this?
 
-Answer: `...`
+Answer: `lookup`
 
 ## #22 - We can collect events into specific time frames to be used in further processing. What command do we include within a search to do just that?
 
-Answer: `...`
+Answer: `bucket`
 
 ## #23 - We can also define data into specific sections of time to be used within chart commands, what command do we use to set these lengths of time? This is different from the previous question as we are no longer collecting for further processing.
 
@@ -635,6 +635,18 @@ Looking for the hash on Virustotal (https://www.virustotal.com/gui/file/9709473a
 $ echo "53 74 65 76 65 20 42 72 61 6e 74 27 73 20 42 65 61 72 64 20 69 73 20 61 20 70 6f 77 65 72 66 75 6c 20 74 68 69 6e 67 2e 20 46 69 6e 64 20 74 68 69 73 20 6d 65 73 73 61 67 65 20 61 6e 64 20 61 73 6b 20 68 69 6d 20 74 6f 20 62 75 79 20 79 6f 75 20 61 20 62 65 65 72 21 21 21" | xxd -r -p
 Steve Brant's Beard is a powerful thing. Find this message and ask him to buy you a beer!!!
 ```
+
+## Summary
+
+Based on our investigation, we can piece together what our adversary did:
+* Scanned for vulnerabilities
+* Found site is running Joomla
+* Performed a brute force password scan, logged into Joomla, installed file upload modules
+* Uploaded webshell
+* Used webshell to upload reverse TCP shell
+* Connected via metasploit
+* Tried to move around but couldn't get out of locked down Windows 2012R2
+* Defaced website with downloaded defacement image
 
 **Kill Chain**
 
