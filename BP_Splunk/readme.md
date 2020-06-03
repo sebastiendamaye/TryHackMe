@@ -928,3 +928,16 @@ _time | query{}
 2016-08-24 17:15:12.668 | cerberhhyed5frqa.xmfir0.win<br>cerberhhyed5frqa.xmfir0.win
 
 At the end of the encryption process, the user is redirected to `cerberhhyed5frqa.xmfir0.win`.
+
+##  Summary
+
+Here is what we have found during our investigation:
+* User (or someone) inserted an infected USB drive into Bob Smith's workstation (not sure why!?!)
+* Word document spawned a Suspicious Process which spawned additional processes
+* File was downloaded after calls were made to a FQDN and IP address
+* Encryption of files begin on both local disk and shares
+* Redirection to an external site with notification of encryption occurred
+
+!["timeline.png"](files/timeline.png)
+
+!["RW-threatpic-all.png"](files/RW-threatpic-all.png)
