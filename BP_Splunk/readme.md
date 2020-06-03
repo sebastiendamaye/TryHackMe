@@ -151,8 +151,8 @@ There are 2 indexes:
 
 index | count
 ---|---
-botsv1	955807
-main	5932
+botsv1 | 955807
+main | 5932
 
 The 1st index does not seem to contain interesting data sources for our investigation:
 
@@ -800,26 +800,131 @@ Answer: `mhtr.jpg`
 
 ## #8 - What is the parent process ID of 121214.tmp?
 
-~~
+~~~
 index=botsv1 121214.tmp sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" CommandLine=*
 | table _time, CommandLine, ProcessId, ParentCommandLine, ParentProcessId 
-|  reverse
+| reverse
 ~~~
 
-_time	
-CommandLine	
-ProcessId	
-ParentCommandLine	
-ParentProcessId
-2016-08-24 16:48:21	"C:\Windows\System32\cmd.exe" /C START "" "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp"	1476	"C:\Windows\System32\WScript.exe" "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\20429.vbs"	3968
-2016-08-24 16:48:21	"C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp"	2948	"C:\Windows\System32\cmd.exe" /C START "" "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp"	1476
-2016-08-24 16:48:29	"C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp"	3828	"C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp"	2948
-2016-08-24 16:48:41	"C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\{35ACA89F-933F-6A5D-2776-A3589FB99832}\osk.exe"	3836	"C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp"	3828
-2016-08-24 16:48:41	/d /c taskkill /t /f /im "121214.tmp" &gt; NUL &amp; ping -n 1 127.0.0.1 &gt; NUL &amp; del "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp" &gt; NUL	1280	"C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp"	3828
-2016-08-24 16:48:41	taskkill  /t /f /im "121214.tmp"	1684	/d /c taskkill /t /f /im "121214.tmp" &gt; NUL &amp; ping -n 1 127.0.0.1 &gt; NUL &amp; del "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp" &gt; NUL	1280
-2016-08-24 16:48:42	ping  -n 1 127.0.0.1	556	/d /c taskkill /t /f /im "121214.tmp" &gt; NUL &amp; ping -n 1 127.0.0.1 &gt; NUL &amp; del "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp" &gt; NUL	1280
+_time | CommandLine | ProcessId | ParentCommandLine | ParentProcessId
+---|---|---|---|---
+2016-08-24 16:48:21 | "C:\Windows\System32\cmd.exe" /C START "" "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp" | 1476 | "C:\Windows\System32\WScript.exe" "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\20429.vbs" | 3968
+2016-08-24 16:48:21 | "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp" | 2948 | "C:\Windows\System32\cmd.exe" /C START "" "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp" | 1476
+2016-08-24 16:48:29 | "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp" | 3828 | "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp" | 2948
+2016-08-24 16:48:41 | "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\{35ACA89F-933F-6A5D-2776-A3589FB99832}\osk.exe" | 3836 | "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp" | 3828
+2016-08-24 16:48:41 | /d /c taskkill /t /f /im "121214.tmp" &gt; NUL &amp; ping -n 1 127.0.0.1 &gt; NUL &amp; del "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp" &gt; NUL | 1280 | "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp" | 3828
+2016-08-24 16:48:41 | taskkill  /t /f /im "121214.tmp" | 1684 | /d /c taskkill /t /f /im "121214.tmp" &gt; NUL &amp; ping -n 1 127.0.0.1 &gt; NUL &amp; del "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp" &gt; NUL | 1280
+2016-08-24 16:48:42 | ping  -n 1 127.0.0.1 | 556 | /d /c taskkill /t /f /im "121214.tmp" &gt; NUL &amp; ping -n 1 127.0.0.1 &gt; NUL &amp; del "C:\Users\bob.smith.WAYNECORPINC\AppData\Roaming\121214.tmp" &gt; NUL | 1280
+
+Answer: `3968`
 
 ## #9 - Amongst the Suricata signatures that detected the Cerber malware, which signature ID alerted the fewest number of times?
+
+~~~
+index=botsv1 cerber sourcetype=suricata 
+| stats count by alert.signature, alert.signature_id 
+| sort -count
+~~~
+
+alert.signature | alert.signature_id | count
+---|---|---
+ETPRO TROJAN Ransomware/Cerber Checkin Error ICMP Response | 2816764 | 2
+ETPRO TROJAN Ransomware/Cerber Onion Domain Lookup | 2820156 | 2
+ETPRO TROJAN Ransomware/Cerber Checkin 2 | 2816763 | 1
+
+Answer: `2816763`
+
 ## #10 - The Cerber ransomware encrypts files located in Bob Smith's Windows profile. How many .txt files does it encrypt?
+
+First run the following request:
+
+~~~
+index=botsv1 host=we8105desk sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" *.txt 
+| stats count by TargetFilename
+~~~
+
+We see that the ransomware crypts files in several locations. To focus on Bob Smith's Windows profile, let's filter `*.txt` files in Bob Smith's home folder:
+
+~~~
+index=botsv1 host=we8105desk sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" TargetFilename="C:\\Users\\bob.smith.WAYNECORPINC\\*.txt" 
+| stats dc(TargetFilename)
+~~~
+
+Answer: `406`
+
 ## #11 - How many distinct PDFs did the ransomware encrypt on the remote file server?
+
+The majority of logs related to PDF is in the `wineventlog` sourcetype:
+
+~~~
+index=botsv1 *.pdf 
+| stats count by sourcetype 
+| sort -count
+~~~
+
+Results:
+
+sourcetype | count
+---|---
+wineventlog | 527
+stream:smb | 283
+XmlWinEventLog:Microsoft-Windows-Sysmon/Operational | 50
+WinRegistry | 3
+stream:http | 1
+
+There are 2 distinct destinations:
+
+~~~
+index=botsv1 *.pdf sourcetype=wineventlog 
+|  stats count by dest 
+|  sort -count
+~~~
+
+dest | count
+---|---
+we9041srv.waynecorpinc.local | 526
+we8105desk.waynecorpinc.local | 1
+
+The most probable one is the first name. Now, let's target the source address:
+
+~~~
+index=botsv1 *.pdf sourcetype=wineventlog   dest="we9041srv.waynecorpinc.local" 
+|  stats count by Source_Address 
+|  sort -count
+~~~
+
+Source_Address | count
+---|---
+192.168.250.100 | 525
+192.168.2.50 | 1
+
+The first IP was the one found in the beginning of our investigation for the remote file server.
+
+Now, we should be able to know how many PDF files have been encrypted on the remove file server:
+
+~~~
+index=botsv1 sourcetype=wineventlog dest="we9041srv.waynecorpinc.local" Source_Address="192.168.250.100" Relative_Target_Name="*.pdf"
+| stats dc(Relative_Target_Name)
+~~~
+
+Answer: `257`
+
 ## #12 - What fully qualified domain name (FQDN) does the Cerber ransomware attempt to direct the user to at the end of its encryption phase?
+
+We already identified the domains at question #6:
+
+~~~
+index=botsv1 src_ip="192.168.250.100" sourcetype=stream:dns record_type=A NOT (query{}="*microsoft.com" OR query{}="wpad" OR query{}="*.waynecorpinc.local" OR query{}="isatap" OR query{}="*bing.com" OR query{}="*windows.com" OR query{}="*msftncsi.com")
+| table _time, query{}
+| sort by _time 
+~~~
+
+Results:
+
+_time | query{}
+---|---
+2016-08-24 16:48:12.267	| solidaritedeproximite.org<br>solidaritedeproximite.org
+2016-08-24 16:49:24.308	| ipinfo.io<br>ipinfo.io
+2016-08-24 17:15:12.668 | cerberhhyed5frqa.xmfir0.win<br>cerberhhyed5frqa.xmfir0.win
+
+At the end of the encryption process, the user is redirected to `cerberhhyed5frqa.xmfir0.win`.
