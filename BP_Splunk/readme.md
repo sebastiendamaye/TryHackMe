@@ -9,7 +9,7 @@ Deploy the Splunk virtual machine. This can take up to five to ten minutes to la
 
 # [Task 2] Can you dig it?
 
-A short quiz over the base search commands that are useful for Splunk. All you'll need for this is the attached quick reference guide and possibly the magic of Google. Include all parts of the search query unless otherwise instructed.
+A short quiz over the base search commands that are useful for Splunk. All you'll need for this is the attached [quick reference guide](files/splunk-quick-reference-guide.pdf) and possibly the magic of Google. Include all parts of the search query unless otherwise instructed.
 
 Enjoy the room! For future rooms and write-ups, follow @darkstar7471 on Twitter.
 
@@ -103,7 +103,7 @@ Answer: `bucket`
 
 ## #23 - We can also define data into specific sections of time to be used within chart commands, what command do we use to set these lengths of time? This is different from the previous question as we are no longer collecting for further processing.
 
-Answer: `...`
+Answer: `span`
 
 ## #24 - When producing statistics regarding a search it's common to number the occurrences of an event, what command do we include to do this?
 
