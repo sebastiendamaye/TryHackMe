@@ -181,7 +181,7 @@ Looks like we have a password (`y2RPJ4QaPF!B`) but no user name. And we are inst
 
 Then I saw the hint (`There's something ROTten about this guys name!`) and thought there might be something else to get from the picture.
 
-Nothing with binwalk, but steghide was moe lucky (use the password found as key):
+Nothing with binwalk, but steghide was luckier (use the password found as key):
 
 ~~~
 $ steghide info thm.jpg 
