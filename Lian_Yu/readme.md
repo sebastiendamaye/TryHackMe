@@ -54,7 +54,7 @@ $ curl -s http://10.10.222.216/island/
 </html>
 ~~~
 
-We can see a hiddent code: `vigilante`. It might be a username? Let's keep it for now.
+We can see a hidden code: `vigilante`. It might be a username? Let's keep it for now.
 
 ## #2 - What is the Web Directory you found?
 
