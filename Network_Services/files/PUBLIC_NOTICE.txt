@@ -1,0 +1,17 @@
+===================================
+MESSAGE FROM SYSTEM ADMINISTRATORS
+===================================
+
+Hello,
+
+I hope everyone is aware that the
+FTP server will not be available 
+over the weekend- we will be 
+carrying out routine system 
+maintenance. Backups will be
+made to my account so I reccomend
+encrypting any sensitive data.
+
+Cheers,
+
+Mike 

