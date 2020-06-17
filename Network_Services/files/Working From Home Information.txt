@@ -1,0 +1,13 @@
+John Cactus,
+
+As you're well aware, due to the current pandemic most of POLO inc. has insisted that, wherever 
+possible, employees should work from home. As such- your account has now been enabled with ssh
+access to the main server.
+
+If there are any problems, please contact the IT department at it@polointernalcoms.uk
+
+Regards,
+
+James
+Department Manager 
+
