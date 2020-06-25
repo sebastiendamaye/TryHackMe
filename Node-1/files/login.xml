@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE items [
+<!ELEMENT items (item*)>
+<!ATTLIST items burpVersion CDATA "">
+<!ATTLIST items exportTime CDATA "">
+<!ELEMENT item (time, url, host, port, protocol, method, path, extension, request, status, responselength, mimetype, response, comment)>
+<!ELEMENT time (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT host (#PCDATA)>
+<!ATTLIST host ip CDATA "">
+<!ELEMENT port (#PCDATA)>
+<!ELEMENT protocol (#PCDATA)>
+<!ELEMENT method (#PCDATA)>
+<!ELEMENT path (#PCDATA)>
+<!ELEMENT extension (#PCDATA)>
+<!ELEMENT request (#PCDATA)>
+<!ATTLIST request base64 (true|false) "false">
+<!ELEMENT status (#PCDATA)>
+<!ELEMENT responselength (#PCDATA)>
+<!ELEMENT mimetype (#PCDATA)>
+<!ELEMENT response (#PCDATA)>
+<!ATTLIST response base64 (true|false) "false">
+<!ELEMENT comment (#PCDATA)>
+]>
+<items burpVersion="2020.5.1" exportTime="Thu Jun 25 08:27:32 CEST 2020">
+  <item>
+    <time>Thu Jun 25 08:26:43 CEST 2020</time>
+    <url><![CDATA[http://10.10.86.179:3000/api/session/authenticate]]></url>
+    <host ip="10.10.86.179">10.10.86.179</host>
+    <port>3000</port>
+    <protocol>http</protocol>
+    <method><![CDATA[POST]]></method>
+    <path><![CDATA[/api/session/authenticate]]></path>
+    <extension>null</extension>
+    <request base64="true"><![CDATA[UE9TVCAvYXBpL3Nlc3Npb24vYXV0aGVudGljYXRlIEhUVFAvMS4xDQpIb3N0OiAxMC4xMC44Ni4xNzk6MzAwMA0KVXNlci1BZ2VudDogTW96aWxsYS81LjAgKFgxMTsgRmVkb3JhOyBMaW51eCB4ODZfNjQ7IHJ2Ojc3LjApIEdlY2tvLzIwMTAwMTAxIEZpcmVmb3gvNzcuMA0KQWNjZXB0OiBhcHBsaWNhdGlvbi9qc29uLCB0ZXh0L3BsYWluLCAqLyoNCkFjY2VwdC1MYW5ndWFnZTogZW4tVVMsZW47cT0wLjUNCkFjY2VwdC1FbmNvZGluZzogZ3ppcCwgZGVmbGF0ZQ0KQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9qc29uO2NoYXJzZXQ9dXRmLTgNCkNvbnRlbnQtTGVuZ3RoOiA0Mg0KT3JpZ2luOiBodHRwOi8vMTAuMTAuODYuMTc5OjMwMDANCkROVDogMQ0KQ29ubmVjdGlvbjogY2xvc2UNClJlZmVyZXI6IGh0dHA6Ly8xMC4xMC44Ni4xNzk6MzAwMC9sb2dpbg0KDQp7InVzZXJuYW1lIjoiYWRtaW4iLCJwYXNzd29yZCI6InBhc3N3b3JkIn0=]]></request>
+    <status>200</status>
+    <responselength>255</responselength>
+    <mimetype>JSON</mimetype>
+    <response base64="true"><![CDATA[SFRUUC8xLjEgMjAwIE9LDQpYLVBvd2VyZWQtQnk6IEV4cHJlc3MNCkNvbnRlbnQtVHlwZTogYXBwbGljYXRpb24vanNvbjsgY2hhcnNldD11dGYtOA0KQ29udGVudC1MZW5ndGg6IDQ4DQpFVGFnOiBXLyIzMC1Xa25mdlo1S1NiUUs0M1BZZnV0TDBxcy9HNmciDQpEYXRlOiBUaHUsIDI1IEp1biAyMDIwIDA2OjI2OjQ3IEdNVA0KQ29ubmVjdGlvbjogY2xvc2UNCg0KeyJlcnJvciI6dHJ1ZSwibWVzc2FnZSI6IkF1dGhlbnRpY2F0aW9uIGZhaWxlZCJ9]]></response>
+    <comment></comment>
+  </item>
+</items>
