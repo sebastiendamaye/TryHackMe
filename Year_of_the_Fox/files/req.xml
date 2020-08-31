@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE items [
+<!ELEMENT items (item*)>
+<!ATTLIST items burpVersion CDATA "">
+<!ATTLIST items exportTime CDATA "">
+<!ELEMENT item (time, url, host, port, protocol, method, path, extension, request, status, responselength, mimetype, response, comment)>
+<!ELEMENT time (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT host (#PCDATA)>
+<!ATTLIST host ip CDATA "">
+<!ELEMENT port (#PCDATA)>
+<!ELEMENT protocol (#PCDATA)>
+<!ELEMENT method (#PCDATA)>
+<!ELEMENT path (#PCDATA)>
+<!ELEMENT extension (#PCDATA)>
+<!ELEMENT request (#PCDATA)>
+<!ATTLIST request base64 (true|false) "false">
+<!ELEMENT status (#PCDATA)>
+<!ELEMENT responselength (#PCDATA)>
+<!ELEMENT mimetype (#PCDATA)>
+<!ELEMENT response (#PCDATA)>
+<!ATTLIST response base64 (true|false) "false">
+<!ELEMENT comment (#PCDATA)>
+]>
+<items burpVersion="2020.8.1" exportTime="Sun Aug 30 12:21:16 CEST 2020">
+  <item>
+    <time>Sun Aug 30 12:18:26 CEST 2020</time>
+    <url><![CDATA[http://10.10.76.175/assets/php/search.php]]></url>
+    <host ip="10.10.76.175">10.10.76.175</host>
+    <port>80</port>
+    <protocol>http</protocol>
+    <method><![CDATA[POST]]></method>
+    <path><![CDATA[/assets/php/search.php]]></path>
+    <extension>php</extension>
+    <request base64="true"><![CDATA[UE9TVCAvYXNzZXRzL3BocC9zZWFyY2gucGhwIEhUVFAvMS4xDQpIb3N0OiAxMC4xMC43Ni4xNzUNClVzZXItQWdlbnQ6IE1vemlsbGEvNS4wIChYMTE7IExpbnV4IHg4Nl82NDsgcnY6NjguMCkgR2Vja28vMjAxMDAxMDEgRmlyZWZveC82OC4wDQpBY2NlcHQ6ICovKg0KQWNjZXB0LUxhbmd1YWdlOiBlbi1VUyxlbjtxPTAuNQ0KQWNjZXB0LUVuY29kaW5nOiBnemlwLCBkZWZsYXRlDQpSZWZlcmVyOiBodHRwOi8vMTAuMTAuNzYuMTc1Lw0KQ29udGVudC1UeXBlOiB0ZXh0L3BsYWluO2NoYXJzZXQ9VVRGLTgNCkNvbnRlbnQtTGVuZ3RoOiAyMQ0KQXV0aG9yaXphdGlvbjogQmFzaWMgY21GelkyRnNPbkIxYzNONU1RPT0NCkNvbm5lY3Rpb246IGNsb3NlDQoNCnsidGFyZ2V0IjoicGFzc3dvcmQifQ==]]></request>
+    <status>200</status>
+    <responselength>187</responselength>
+    <mimetype>JSON</mimetype>
+    <response base64="true"><![CDATA[SFRUUC8xLjEgMjAwIE9LDQpEYXRlOiBTdW4sIDMwIEF1ZyAyMDIwIDEwOjE4OjI4IEdNVA0KU2VydmVyOiBBcGFjaGUvMi40LjI5IChVYnVudHUpDQpDb250ZW50LUxlbmd0aDogMjANCkNvbm5lY3Rpb246IGNsb3NlDQpDb250ZW50LVR5cGU6IHRleHQvaHRtbDsgY2hhcnNldD1VVEYtOA0KDQpbIk5vIGZpbGUgcmV0dXJuZWQiXQ==]]></response>
+    <comment></comment>
+  </item>
+</items>
