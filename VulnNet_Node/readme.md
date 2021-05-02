@@ -137,7 +137,7 @@ Cache-Control: max-age=0
 
 And now we have a reverse shell:
 
-![reverse-shell.png](file/reverse-shell.png)
+![reverse-shell.png](files/reverse-shell.png)
 
 ## Lateral move
 
