@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE items [
+<!ELEMENT items (item*)>
+<!ATTLIST items burpVersion CDATA "">
+<!ATTLIST items exportTime CDATA "">
+<!ELEMENT item (time, url, host, port, protocol, method, path, extension, request, status, responselength, mimetype, response, comment)>
+<!ELEMENT time (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT host (#PCDATA)>
+<!ATTLIST host ip CDATA "">
+<!ELEMENT port (#PCDATA)>
+<!ELEMENT protocol (#PCDATA)>
+<!ELEMENT method (#PCDATA)>
+<!ELEMENT path (#PCDATA)>
+<!ELEMENT extension (#PCDATA)>
+<!ELEMENT request (#PCDATA)>
+<!ATTLIST request base64 (true|false) "false">
+<!ELEMENT status (#PCDATA)>
+<!ELEMENT responselength (#PCDATA)>
+<!ELEMENT mimetype (#PCDATA)>
+<!ELEMENT response (#PCDATA)>
+<!ATTLIST response base64 (true|false) "false">
+<!ELEMENT comment (#PCDATA)>
+]>
+<items burpVersion="2021.4.3" exportTime="Thu May 20 20:40:28 CEST 2021">
+  <item>
+    <time>Thu May 20 20:39:16 CEST 2021</time>
+    <url><![CDATA[http://10.10.254.141/admin?user=1]]></url>
+    <host ip="10.10.254.141">10.10.254.141</host>
+    <port>80</port>
+    <protocol>http</protocol>
+    <method><![CDATA[GET]]></method>
+    <path><![CDATA[/admin?user=1]]></path>
+    <extension>null</extension>
+    <request base64="true"><![CDATA[R0VUIC9hZG1pbj91c2VyPTEgSFRUUC8xLjENCkhvc3Q6IDEwLjEwLjI1NC4xNDENClVzZXItQWdlbnQ6IE1vemlsbGEvNS4wIChYMTE7IExpbnV4IHg4Nl82NDsgcnY6NzguMCkgR2Vja28vMjAxMDAxMDEgRmlyZWZveC83OC4wDQpBY2NlcHQ6IHRleHQvaHRtbCxhcHBsaWNhdGlvbi94aHRtbCt4bWwsYXBwbGljYXRpb24veG1sO3E9MC45LGltYWdlL3dlYnAsKi8qO3E9MC44DQpBY2NlcHQtTGFuZ3VhZ2U6IGVuLVVTLGVuO3E9MC41DQpBY2NlcHQtRW5jb2Rpbmc6IGd6aXAsIGRlZmxhdGUNCkNvbm5lY3Rpb246IGNsb3NlDQpDb29raWU6IHRva2VuPWV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUoxYzJWeVNXUWlPaklzSW5WelpYSnVZVzFsSWpvaWJXbGphR0ZsYkNJc0ltRmtiV2x1SWpwMGNuVmxMQ0pwWVhRaU9qRTJNakUxTXpVNU16SjkuNmExSlh3QU5HY29kRy0zLU1wbGpzejdGWWx3ejBHTmVQTTlvV1lVSzRVTQ0KVXBncmFkZS1JbnNlY3VyZS1SZXF1ZXN0czogMQ0KDQo=]]></request>
+    <status>200</status>
+    <responselength>1001</responselength>
+    <mimetype>HTML</mimetype>
+    <response base64="true"><![CDATA[SFRUUC8xLjEgMjAwIE9LDQpTZXJ2ZXI6IG5naW54LzEuMTkuMg0KRGF0ZTogVGh1LCAyMCBNYXkgMjAyMSAxODozOTozNSBHTVQNCkNvbnRlbnQtVHlwZTogdGV4dC9odG1sOyBjaGFyc2V0PXV0Zi04DQpDb25uZWN0aW9uOiBjbG9zZQ0KWC1Qb3dlcmVkLUJ5OiBFeHByZXNzDQpFVGFnOiBXLyIzMDktbFMzM0o0VUVqdkZ6cjVOb3lTTG1IU1lqUnVVIg0KQ29udGVudC1MZW5ndGg6IDc3Nw0KDQo8IURPQ1RZUEUgaHRtbD4KPGh0bWw+CiAgPGhlYWQ+CiAgICA8dGl0bGU+VXNlciAxPC90aXRsZT4KICAgIDxsaW5rIHJlbD0nc3R5bGVzaGVldCcgaHJlZj0nL3N0eWxlc2hlZXRzL3N0eWxlLmNzcycgLz4KICA8L2hlYWQ+CiAgPGJvZHk+CiAgICA8bmF2PgogICAgPGI+VGhlIE1hcmtldHBsYWNlPC9iPgogIDxkaXYgY2xhc3M9InJpZ2h0Ij4KICAgIDxhIGhyZWY9Ii8iPkhvbWU8L2E+IHwKICAgCiAgCiAgICAgIDxhIGhyZWY9Ii9hZG1pbiI+QWRtaW5pc3RyYXRpb24gcGFuZWw8L2E+IHwKICAKICAgICAgPGEgaHJlZj0iL25ldyI+TmV3IGxpc3Rpbmc8L2E+IHwKICAgICAgPGEgaHJlZj0iL21lc3NhZ2VzIj5NZXNzYWdlczwvYT4gfAogICAgICA8YSBocmVmPSIjIiBvbmNsaWNrPSJkb2N1bWVudC5jb29raWU9J3Rva2VuPTsgZXhwaXJlcz1UaHUsIDAxIEphbiAxOTcwIDAwOjAwOjAwIFVUQzsgcGF0aD0vOyc7ZG9jdW1lbnQubG9jYXRpb24ucmVsb2FkKCkiPkxvZyBvdXQ8L2E+CiAgICAKICA8L2Rpdj4KPC9uYXY+CgogICAgICA8aDEgc3R5bGU9InRleHQtYWxpZ246IGNlbnRlciI+VXNlciAxPC9oMT4KICAgICAgPGRpdj4KICAgICAgICAgIFVzZXIgc3lzdGVtIDxiciAvPgogICAgICAgICAgSUQ6IDEgPGJyIC8+CiAgICAgICAgICBJcyBhZG1pbmlzdHJhdG9yOiBmYWxzZSA8YnIgLz4KICAgICAgIDxidXR0b24gb25jbGljaz0idGhpcy5kaXNhYmxlZCA9IHRydWUiPkRlbGV0ZSB1c2VyPC9idXR0b24+CiAgICAgIDwvZGl2PgogIDwvYm9keT4KPC9odG1sPgo=]]></response>
+    <comment></comment>
+  </item>
+</items>
